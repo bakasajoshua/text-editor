@@ -180,7 +180,7 @@ void editorOpen(char *filename) {
 	char *line = NULL;
 	size_t linecap = 0;
 	ssize_t linelen;
-	while (linelen = getline(&line, &linecap, fp) != -1) {
+	while ((linelen = getline(&line, &linecap, fp)) != -1) {
 		while (linelen > 0 && (line[linelen - 1] == '\n' || line[linelen - 1] == '\r'))
 			linelen--;
 		editorAppendRow(line, linelen);
@@ -265,7 +265,7 @@ void editorRefreshScreen() {
 	editorDrawRows(&ab);
 
 	char buf[32];
-	snprintf(buf, sizeof(buf), "\x1b[%d;%dH", E.cy + 1, E.cx + 1);
+	snprintf(buf, sizeof(buf), "\x1b[%d;%dH", (E.cy - E.rowoff) + 1, E.cx + 1);
 	abAppend(&ab, buf, strlen(buf));
 
 	abAppend(&ab, "\x1b[?25h", 6);
